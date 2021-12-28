@@ -15,21 +15,21 @@ const Form = ({ currentId, setCurrentId }) => {
         if (post) setPostData(post);
     }, [post]);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-
         if (currentId === 0) {
             dispatch(createPost(postData));
+            clear();
         } else {
             dispatch(updatePost(currentId, postData));
+            clear();
         }
-        clear();
-    }
+    };
 
     const clear = () => {
         setCurrentId(0);
         setPostData({ creator: '', title: '', message: '', tags: '', selectedFile: '' });
-    }
+    };
 
     return (
         <Paper className={classes.paper}>
@@ -65,7 +65,7 @@ const Form = ({ currentId, setCurrentId }) => {
                 label="Tags" 
                 fullWidth
                 value={postData.tags}
-                onChange={(e) => setPostData({ ...postData, tags: e.target.value })}
+                onChange={(e) => setPostData({ ...postData, tags: e.target.value.split(',') })}
             />
             <div className={classes.fileInput}>
                 <FileBase
